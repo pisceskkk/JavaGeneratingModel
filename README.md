@@ -33,11 +33,11 @@ Sometimes I create models based on table information in the database. This tool 
 
 1、Import jar getmodel-1.0.jar or use this project.
 
-2、You can refer to the example <a href="https://github.com/Renhongqiang/JavaGeneratingModel/blob/master/src/com/ren/test/Test.java">src/com/ren/test/Test.java</a>
+2、You can refer to the example <a href="https://github.com/pisceskkk/JavaGeneratingModel/blob/master/src/com/ren/test/Test.java">src/com/ren/test/Test.java</a>
 
 <pre>
 	//File output path
-       	String path = "H:\\pojo";
+       	String path = "/path/to/target/files";
         //conn : Database Connection
         GetModel getModel  = new GetModel(conn);
         /*
@@ -47,14 +47,16 @@ Sometimes I create models based on table information in the database. This tool 
          */
         //Generate pojo to path
         //getModel.generatePojo(path);
-        //Generate pojo to path and add package information "package com.ren.model" in pojo
-        //getModel.generatePojo(path, "com.ren.model");
+        //Generate pojo to path and add package information "package com.example.model" in pojo
+        //getModel.generatePojo(path, "com.example.model");
         //Generate Bean to path
         //getModel.generateBean(path);
-        //Generate a bean to the path and add the package information "package com.ren.bean" to the bean.
-        //getModel.generateBean(path, "com.ren.bean");
+        //Generate a bean to the path and add the package information "package com.example.bean" to the bean.
+        //getModel.generateBean(path, "com.example.bean");
 </pre>
 
-
+### TODO
+- [] get arguments from commandline
+- [] release
 
 
