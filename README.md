@@ -56,7 +56,7 @@ Sometimes I create models based on table information in the database. This tool 
 </pre>
 
 ### TODO
-- [] get arguments from commandline
-- [] release
+- [ ] get arguments from commandline
+- [ ] release
 
 
