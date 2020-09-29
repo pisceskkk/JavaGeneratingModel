@@ -104,7 +104,7 @@ public class GetModel {
      * @param path 输出路径
      */
     private static void writeFilePojo(Table table, String path, String packagePath) {
-        String fileName = path + "\\" + upperCase(table.getTableName()) + ".java";
+        String fileName = path + "/" + upperCase(table.getTableName()) + ".java";
         try {
             FileWriter writer = new FileWriter(fileName);
             StringBuilder  getterSetter = new StringBuilder();
@@ -138,18 +138,23 @@ public class GetModel {
      * @param path 输出路径
      */
     private static void writeFileBean(Table table, String path, String packagePath) {
-        String fileName = path + "\\" + upperCase(table.getTableName()) + ".java";
+        String fileName = path + "/" + upperCase(table.getTableName()) + ".java";
         try {
             FileWriter writer = new FileWriter(fileName);
             StringBuilder  getterSetter = new StringBuilder();
+            StringBuilder  parametricConstructorHeader = new StringBuilder();
+            StringBuilder  parametricConstructorBody = new StringBuilder();
             //需要添加包路径
             if (!packagePath.equals("0")) {
                 writer.write("package " + packagePath + ";\n\n");
             }
+            writer.write("import java.math.*;\n");
+            writer.write("import java.util.*;\n");
             writer.write("import java.io.Serializable;\n\n");
             writer.write("public class " + upperCase(table.getTableName()) + " implements Serializable {\n");
+            Boolean first = true;
             for (Column column : table.getColumns()) {
-                writer.write("    private " + changeType(column.getColumnTypeName()) + " " + column.getColumnName() + "\n");
+                writer.write("    private " + changeType(column.getColumnTypeName()) + " " + column.getColumnName() + ";\n");
                 //getter()
                 getterSetter.append("\n    public " + changeType(column.getColumnTypeName()) + " get" + upperCase(column.getColumnName()) + "() {\n");
                 getterSetter.append("        return " + column.getColumnName() + ";\n");
@@ -158,9 +163,20 @@ public class GetModel {
                 getterSetter.append("    public void set" + upperCase(column.getColumnName()) + "(" + changeType(column.getColumnTypeName()) + " " + column.getColumnName() + ") {\n");
                 getterSetter.append("        this." + column.getColumnName() + " = " + column.getColumnName() + ";\n");
                 getterSetter.append("    }\n");
+                if(first == true){
+                    first = false;
+                }
+                else {
+                    parametricConstructorHeader.append(", ");
+                }
+                parametricConstructorHeader.append(changeType(column.getColumnTypeName()) + " " + column.getColumnName());
+                parametricConstructorBody.append("        this." + column.getColumnName() + " = " + column.getColumnName() + ";\n");
             }
             //无参构造器
             writer.write("\n    public " + upperCase(table.getTableName()) + "() { }\n");
+            //含参构造器
+            // writer.write("    public " +  upperCase(table.getTableName()) + "(" + parametricConstructorHeader.toString() + ") {\n" + parametricConstructorBody.toString() + "    }\n");
+
             writer.write(getterSetter.toString());
             writer.write("}");
             writer.close();
@@ -234,7 +250,7 @@ public class GetModel {
     public void generatePojo(String path) {
         for (Table table : tables) {
             writeFilePojo(table, path, "0");
-            System.out.println("已创建Pojo: " + path + "\\" + upperCase(table.getTableName()) + ".java");
+            System.out.println("已创建Pojo: " + path + "" + upperCase(table.getTableName()) + ".java");
         }
     }
 
@@ -245,7 +261,7 @@ public class GetModel {
     public void generateBean(String path) {
         for (Table table : tables) {
             writeFileBean(table, path, "0");
-            System.out.println("已创建Bean: " + path + "\\" + upperCase(table.getTableName()) + ".java");
+            System.out.println("已创建Bean: " + path + "/" + upperCase(table.getTableName()) + ".java");
         }
     }
 
@@ -257,7 +273,7 @@ public class GetModel {
     public void generatePojo(String path, String packagePath) {
         for (Table table : tables) {
             writeFilePojo(table, path, packagePath);
-            System.out.println("已创建Pojo: " + path + "\\" + upperCase(table.getTableName()) + ".java    包名：" + packagePath);
+            System.out.println("已创建Pojo: " + path + "/" + upperCase(table.getTableName()) + ".java    包名：" + packagePath);
         }
     }
 
@@ -269,7 +285,7 @@ public class GetModel {
     public void generateBean(String path, String packagePath) {
         for (Table table : tables) {
             writeFileBean(table, path, packagePath);
-            System.out.println("已创建Bean: " + path + "\\" + upperCase(table.getTableName()) + ".java    包名：" + packagePath);
+            System.out.println("已创建Bean: " + path + "/" + upperCase(table.getTableName()) + ".java    包名：" + packagePath);
         }
     }
 }
